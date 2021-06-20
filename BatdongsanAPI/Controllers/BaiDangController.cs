@@ -114,8 +114,42 @@ namespace BatdongsanAPI.Controllers
             return res;
         }
 
-        // GET: api/<BaiDangController>
-        [HttpGet]
+        [HttpPost]
+        public ResponseModel GetPosts([FromBody] Dictionary<string, object> formData)
+        {
+            var response = new ResponseModel();
+            var page = int.Parse(formData["page"].ToString());
+            var result = formData["item_group_id"].ToString();
+            List<TblBaiDang> _post = null;
+            if (result == "all")
+            {
+                int _skip = (page - 1) * 6;
+                response.TotalItems = _context.TblBaiDangs.Where(x => x.MaHinhThuc=="1"||x.MaHinhThuc=="2").Count();
+
+                _post = _context.TblBaiDangs.Where(x => x.MaHinhThuc == "1" || x.MaHinhThuc == "2").OrderByDescending(x=>x.LoaiBaiDang).Skip(_skip).Take(6).ToList();
+
+                response.Data = _post;
+                response.Page = page;
+                return response;
+            }
+            if (result != "all")
+            {
+                int _skip = (page - 1) * 6;
+                response.TotalItems = _context.TblBaiDangs.Where(x => x.MaLoaiBds==result).Count();
+
+                _post = _context.TblBaiDangs.Where(x => x.MaLoaiBds==result).OrderByDescending(x => x.LoaiBaiDang).Skip(_skip).Take(6).ToList();
+
+                response.Data = _post;
+                response.Page = page;
+                return response;
+            }
+            return null;
+        }
+
+
+
+            // GET: api/<BaiDangController>
+            [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
