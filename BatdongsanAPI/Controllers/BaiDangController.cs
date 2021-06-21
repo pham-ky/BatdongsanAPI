@@ -23,13 +23,13 @@ namespace BatdongsanAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TblBaiDang>>> getNew()
         {
-            return await _context.TblBaiDangs.OrderByDescending(x=>x.MaBaiDang).Take(6).ToListAsync();
+            return await _context.TblBaiDangs.OrderByDescending(x => x.MaBaiDang).Take(6).ToListAsync();
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TblBaiDang>>> getVip()
         {
-            return await _context.TblBaiDangs.Where(x=>x.LoaiBaiDang=="1").OrderByDescending(x => x.MaBaiDang).Take(6).ToListAsync();
+            return await _context.TblBaiDangs.Where(x => x.LoaiBaiDang == "1").OrderByDescending(x => x.MaBaiDang).Take(6).ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -124,9 +124,9 @@ namespace BatdongsanAPI.Controllers
             if (result == "all")
             {
                 int _skip = (page - 1) * 6;
-                response.TotalItems = _context.TblBaiDangs.Where(x => x.MaHinhThuc=="1"||x.MaHinhThuc=="2").Count();
+                response.TotalItems = _context.TblBaiDangs.Where(x => x.MaHinhThuc == "1" || x.MaHinhThuc == "2").Count();
 
-                _post = _context.TblBaiDangs.Where(x => x.MaHinhThuc == "1" || x.MaHinhThuc == "2").OrderByDescending(x=>x.LoaiBaiDang).Skip(_skip).Take(6).ToList();
+                _post = _context.TblBaiDangs.Where(x => x.MaHinhThuc == "1" || x.MaHinhThuc == "2").OrderByDescending(x => x.LoaiBaiDang).Skip(_skip).Take(6).ToList();
 
                 response.Data = _post;
                 response.Page = page;
@@ -135,9 +135,9 @@ namespace BatdongsanAPI.Controllers
             if (result != "all")
             {
                 int _skip = (page - 1) * 6;
-                response.TotalItems = _context.TblBaiDangs.Where(x => x.MaLoaiBds==result).Count();
+                response.TotalItems = _context.TblBaiDangs.Where(x => x.MaLoaiBds == result).Count();
 
-                _post = _context.TblBaiDangs.Where(x => x.MaLoaiBds==result).OrderByDescending(x => x.LoaiBaiDang).Skip(_skip).Take(6).ToList();
+                _post = _context.TblBaiDangs.Where(x => x.MaLoaiBds == result).OrderByDescending(x => x.LoaiBaiDang).Skip(_skip).Take(6).ToList();
 
                 response.Data = _post;
                 response.Page = page;
@@ -146,10 +146,29 @@ namespace BatdongsanAPI.Controllers
             return null;
         }
 
+        [HttpPost]
+        public ResponseModel GetListPosts([FromBody] Dictionary<string, object> formData)
+        {
+            var response = new ResponseModel();
+            var page = int.Parse(formData["page"].ToString());
+            var result = formData["id_user"].ToString();
+            List<TblBaiDang> _post = null;
+            int _skip = (page - 1) * 6;
+            response.TotalItems = _context.TblBaiDangs.Where(x => x.MaTk == result).Count();
+
+            _post = _context.TblBaiDangs.Where(x => x.MaTk == result).Skip(_skip).Take(6).ToList();
+
+            response.Data = _post;
+            response.Page = page;
+            return response;
+
+            //return null;
+        }
 
 
-            // GET: api/<BaiDangController>
-            [HttpGet]
+
+        // GET: api/<BaiDangController>
+        [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
