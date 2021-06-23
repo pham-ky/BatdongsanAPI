@@ -40,6 +40,19 @@ namespace BatdongsanAPI.Controllers
             return await _context.TblTaiKhoans.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TblTaiKhoan>> getUser(string id)
+        {
+            var user = await _context.TblTaiKhoans.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+
         // GET api/<UserController>/5
         [HttpGet("{id}")]
         public string Get(int id)

@@ -132,7 +132,29 @@ namespace BatdongsanAPI.Controllers
                 response.Page = page;
                 return response;
             }
-            if (result != "all")
+            if (result == "ban")
+            {
+                int _skip = (page - 1) * 6;
+                response.TotalItems = _context.TblBaiDangs.Where(x => x.MaHinhThuc == "1").Count();
+
+                _post = _context.TblBaiDangs.Where(x => x.MaHinhThuc == "1").OrderByDescending(x => x.LoaiBaiDang).Skip(_skip).Take(6).ToList();
+
+                response.Data = _post;
+                response.Page = page;
+                return response;
+            }
+            if (result == "chothue")
+            {
+                int _skip = (page - 1) * 6;
+                response.TotalItems = _context.TblBaiDangs.Where(x => x.MaHinhThuc == "2").Count();
+
+                _post = _context.TblBaiDangs.Where(x => x.MaHinhThuc == "2").OrderByDescending(x => x.LoaiBaiDang).Skip(_skip).Take(6).ToList();
+
+                response.Data = _post;
+                response.Page = page;
+                return response;
+            }
+            if (result != "all" || result != "ban" || result != "chothue")
             {
                 int _skip = (page - 1) * 6;
                 response.TotalItems = _context.TblBaiDangs.Where(x => x.MaLoaiBds == result).Count();
@@ -156,7 +178,26 @@ namespace BatdongsanAPI.Controllers
             int _skip = (page - 1) * 6;
             response.TotalItems = _context.TblBaiDangs.Where(x => x.MaTk == result).Count();
 
-            _post = _context.TblBaiDangs.Where(x => x.MaTk == result).Skip(_skip).Take(6).ToList();
+            _post = _context.TblBaiDangs.Where(x => x.MaTk == result).OrderByDescending(x => x.MaBaiDang).Skip(_skip).Take(6).ToList();
+
+            response.Data = _post;
+            response.Page = page;
+            return response;
+
+            //return null;
+        }
+
+        [HttpPost]
+        public ResponseModel GetHistory([FromBody] Dictionary<string, object> formData)
+        {
+            var response = new ResponseModel();
+            var page = int.Parse(formData["page"].ToString());
+            var result = formData["id_user"].ToString();
+            List<TblThanhToan> _post = null;
+            int _skip = (page - 1) * 6;
+            response.TotalItems = _context.TblThanhToans.Where(x => x.MaTk == result).Count();
+
+            _post = _context.TblThanhToans.Where(x => x.MaTk == result).OrderByDescending(x => x.MaThanhToan).Skip(_skip).Take(6).ToList();
 
             response.Data = _post;
             response.Page = page;
