@@ -28,6 +28,12 @@ namespace BatdongsanAPI.Controllers
             var us = user = await _context.TblTaiKhoans.FirstOrDefaultAsync(u => u.TaiKhoan == user.TaiKhoan && u.MatKhau == user.MatKhau && u.LoaiTk == "user");
             return Ok(us);
         }
+        [HttpPost]
+        public async Task<IActionResult> LoginAdmin([FromBody] TblTaiKhoan user)
+        {
+            var us = user = await _context.TblTaiKhoans.FirstOrDefaultAsync(u => u.TaiKhoan == user.TaiKhoan && u.MatKhau == user.MatKhau && u.LoaiTk == "admin");
+            return Ok(us);
+        }
         // GET: api/<UserController>
         //[HttpGet]
         //public IEnumerable<string> Get()

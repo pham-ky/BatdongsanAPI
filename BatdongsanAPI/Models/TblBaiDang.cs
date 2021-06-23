@@ -63,7 +63,7 @@ namespace BatdongsanAPI.Models
         [StringLength(50)]
         public string Email { get; set; }
         [Column(TypeName = "date")]
-        public DateTime? NgayBatDau { get; set; }
+        public DateTime NgayBatDau { get; set; }
         [Column(TypeName = "date")]
         public DateTime? NgayKetThuc { get; set; }
         [StringLength(50)]

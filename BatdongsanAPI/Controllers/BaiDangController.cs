@@ -36,6 +36,8 @@ namespace BatdongsanAPI.Controllers
         public async Task<ActionResult<TblBaiDang>> getDetail(string id)
         {
             var product = await _context.TblBaiDangs.FindAsync(id);
+            product.LuotXem += 1;
+            _context.SaveChanges();
 
             if (product == null)
             {
@@ -77,6 +79,7 @@ namespace BatdongsanAPI.Controllers
                 NgayKetThuc = post.NgayKetThuc,
                 TrangThai = "0",
                 LoaiBaiDang = post.LoaiBaiDang,
+                LuotXem = 0,
             };
             _context.TblBaiDangs.Add(_post);
             int res;

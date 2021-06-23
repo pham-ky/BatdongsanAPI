@@ -30,7 +30,7 @@ namespace BatdongsanAPI.Models
         public string DiaChiLienHe { get; set; }
         public string Sdt { get; set; }
         public string Email { get; set; }
-        public DateTime? NgayBatDau { get; set; }
+        public DateTime NgayBatDau { get; set; }
         public DateTime? NgayKetThuc { get; set; }
         public string LoaiBaiDang { get; set; }
         public int ThanhTien { get; set; }
