@@ -45,6 +45,17 @@ namespace BatdongsanAPI.Controllers
         {
             return await _context.TblTaiKhoans.ToListAsync();
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TblTaiKhoan>>> GetAllUser()
+        {
+            return await _context.TblTaiKhoans.Where(x=>x.LoaiTk=="user").ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<TblTaiKhoan>>> getLoai(string id)
+        {
+            return await _context.TblTaiKhoans.Where(x => x.LoaiTk == id.ToLower()).ToListAsync();
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TblTaiKhoan>> getUser(string id)
@@ -59,6 +70,55 @@ namespace BatdongsanAPI.Controllers
             return user;
         }
 
+        [HttpPost]
+        public async Task<int> addAdmin(User _user)
+        {
+            TblTaiKhoan _tk = new TblTaiKhoan()
+            {
+                MaTk = "",
+                TaiKhoan = _user.TaiKhoan,
+                MatKhau = _user.MatKhau,
+                SoDuTk = 0,
+                LoaiTk = "admin",
+                TrangThai = "1"
+            };
+            _context.TblTaiKhoans.Add(_tk);
+            int res;
+            try
+            {
+                res = await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return res;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<int> TrangThai(string id)
+        {
+            TblTaiKhoan _tk = await _context.TblTaiKhoans.FindAsync(id);
+            if(_tk.TrangThai == "1")
+            {
+                _tk.TrangThai = "0";
+            }
+            else
+            if (_tk.TrangThai == "0")
+            {
+                _tk.TrangThai = "1";
+            }
+            int res;
+            try
+            {
+                res = await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return res;
+        }
         // GET api/<UserController>/5
         [HttpGet("{id}")]
         public string Get(int id)

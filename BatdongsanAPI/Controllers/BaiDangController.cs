@@ -48,6 +48,23 @@ namespace BatdongsanAPI.Controllers
         }
 
         [HttpPost]
+        public async Task<int> editTT(BaiDangModel post)
+        {
+            TblBaiDang _post = await _context.TblBaiDangs.FindAsync(post.MaBaiDang);
+            _post.TrangThai = post.TrangThai;
+            int res;
+            try
+            {
+                res = await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return res;
+        }
+
+        [HttpPost]
         public async Task<int> addPost(BaiDangModel post)
         {
             TblBaiDang _post = new TblBaiDang()
@@ -77,7 +94,7 @@ namespace BatdongsanAPI.Controllers
                 Email = post.Email,
                 NgayBatDau = post.NgayBatDau,
                 NgayKetThuc = post.NgayKetThuc,
-                TrangThai = "0",
+                TrangThai = "1",
                 LoaiBaiDang = post.LoaiBaiDang,
                 LuotXem = 0,
             };
@@ -209,6 +226,24 @@ namespace BatdongsanAPI.Controllers
             //return null;
         }
 
+        [HttpPost]
+        public ResponseModel getTT([FromBody] Dictionary<string, object> formData)
+        {
+            var response = new ResponseModel();
+            var page = int.Parse(formData["page"].ToString());
+            var result = formData["trangthai"].ToString();
+            List<TblBaiDang> _post = null;
+            int _skip = (page - 1) * 10;
+            response.TotalItems = _context.TblBaiDangs.Where(x => x.TrangThai == result).Count();
+
+            _post = _context.TblBaiDangs.Where(x => x.TrangThai == result).OrderByDescending(x => x.MaBaiDang).Skip(_skip).Take(10).ToList();
+
+            response.Data = _post;
+            response.Page = page;
+            return response;
+
+            //return null;
+        }
 
 
         // GET: api/<BaiDangController>

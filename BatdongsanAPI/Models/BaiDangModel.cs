@@ -34,5 +34,6 @@ namespace BatdongsanAPI.Models
         public DateTime? NgayKetThuc { get; set; }
         public string LoaiBaiDang { get; set; }
         public int ThanhTien { get; set; }
+        public string TrangThai { get; set; }
     }
 }

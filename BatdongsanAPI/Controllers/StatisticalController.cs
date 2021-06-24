@@ -28,11 +28,11 @@ namespace BatdongsanAPI.Controllers
             int[] quantity = new int[5];
             dynamic[] payment = new dynamic[5];
             var totalpay = 0;
-            
+
 
             var totalPost = _context.TblBaiDangs.Where(x => x.NgayBatDau.Month == DateTime.Now.Month).Count();
             var _pay = _context.TblThanhToans.Where(x => x.NgayThanhToan.Month == DateTime.Now.Month);
-            foreach(var p in _pay)
+            foreach (var p in _pay)
             {
                 totalpay += p.ThanhTien;
             }
@@ -51,7 +51,37 @@ namespace BatdongsanAPI.Controllers
                 payment[x] = S;
                 x++;
             }
-            return new { quantity, totalPost, payment, totalpay};
+            return new { quantity, totalPost, payment, totalpay };
+        }
+
+        [HttpGet]
+        public Object Nap()
+        {
+            int x = 0;
+            dynamic[] Nap = new dynamic[5];
+            dynamic totalNap = 0;
+
+
+            var _nap = _context.TblNapTiens.Where(x => x.NgayNap.Month == DateTime.Now.Month);
+            foreach (var p in _nap)
+            {
+                totalNap += p.SoTienNap;
+            }
+
+
+            for (int i = 4; i >= 0; i--)
+            {
+                int S = 0;
+                var previousDate = DateTime.Now.AddMonths(-i);
+                var _nap1 = _context.TblNapTiens.Where(x => x.NgayNap.Month == previousDate.Month);
+                foreach (var p in _nap1)
+                {
+                    S += p.SoTienNap;
+                }
+                Nap[x] = S;
+                x++;
+            }
+            return new { Nap, totalNap};
         }
 
 
@@ -61,7 +91,24 @@ namespace BatdongsanAPI.Controllers
             return await _context.TblBaiDangs.OrderByDescending(x => x.LuotXem).Take(x).ToListAsync();
         }
 
+        [HttpPost]
+        public ResponseModel View([FromBody] Dictionary<string, object> formData)
+        {
+            var response = new ResponseModel();
+            var page = int.Parse(formData["page"].ToString());
+            var result = formData["total"].ToString();
+            List<TblBaiDang> _post = null;
+            int _skip = (page - 1) * 10;
+            if (result != "5")
+                _post = _context.TblBaiDangs.OrderByDescending(x => x.LuotXem).Skip(_skip).Take(10).ToList();
+            if (result == "5")
+                _post = _context.TblBaiDangs.OrderByDescending(x => x.LuotXem).Skip(_skip).Take(int.Parse(result)).ToList();
+            response.Data = _post;
+            response.Page = page;
+            return response;
 
+            //return null;
+        }
 
         // GET: api/<StatisticalController>
         [HttpGet]
