@@ -71,23 +71,36 @@ namespace BatdongsanAPI.Models
         [StringLength(50)]
         public string LoaiBaiDang { get; set; }
         public int? LuotXem { get; set; }
-
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         [ForeignKey(nameof(MaHinhThuc))]
         [InverseProperty(nameof(TblHinhThuc.TblBaiDangs))]
         public virtual TblHinhThuc MaHinhThucNavigation { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         [ForeignKey(nameof(MaLoaiBds))]
         [InverseProperty(nameof(TblLoaiBd.TblBaiDangs))]
         public virtual TblLoaiBd MaLoaiBdsNavigation { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         [ForeignKey(nameof(MaTk))]
         [InverseProperty(nameof(TblTaiKhoan.TblBaiDangs))]
         public virtual TblTaiKhoan MaTkNavigation { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         [ForeignKey(nameof(MaXp))]
         [InverseProperty(nameof(TblXaPhuong.TblBaiDangs))]
         public virtual TblXaPhuong MaXpNavigation { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         [InverseProperty(nameof(TblDsYeuThich.MaBaiDangNavigation))]
         public virtual ICollection<TblDsYeuThich> TblDsYeuThiches { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         [InverseProperty(nameof(TblHinhAnh.MaBaiDangNavigation))]
         public virtual ICollection<TblHinhAnh> TblHinhAnhs { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         [InverseProperty(nameof(TblThanhToan.MaBaiDangNavigation))]
         public virtual ICollection<TblThanhToan> TblThanhToans { get; set; }
     }

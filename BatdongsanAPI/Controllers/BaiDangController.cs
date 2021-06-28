@@ -32,6 +32,10 @@ namespace BatdongsanAPI.Controllers
             return await _context.TblBaiDangs.Where(x => x.LoaiBaiDang == "1").OrderByDescending(x => x.MaBaiDang).Take(6).ToListAsync();
         }
 
+        public async Task<ActionResult<IEnumerable<TblBaiDang>>> getTuongTu()
+        {
+            return await _context.TblBaiDangs.OrderByDescending(x => x.MaBaiDang).Take().ToListAsync();
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<TblBaiDang>> getDetail(string id)
         {
@@ -204,7 +208,7 @@ namespace BatdongsanAPI.Controllers
             List<TblBaiDang> _post = null;
             int _skip = (page - 1) * 6;
             int count = 0;
-            if ( loai == "" && huong =="" && tinh =="" && huyen == "" && xa == "")
+            if (loai == "" && huong == "" && tinh == "" && huyen == "" && xa == "")
             {
                 if (hinhthuc == "all")
                 {
@@ -247,7 +251,7 @@ namespace BatdongsanAPI.Controllers
                     return response;
                 }
             }
-            if (hinhthuc == ""|| loai==""||huong=="")
+            if (hinhthuc == "" || loai == "" || huong == "")
             {
                 if (xa != "")
                 {
@@ -339,7 +343,7 @@ namespace BatdongsanAPI.Controllers
                 }
 
             }
-            if(loai != "" && huong == "")
+            if (loai != "" && huong == "")
             {
                 if (xa != "")
                 {
@@ -442,7 +446,7 @@ namespace BatdongsanAPI.Controllers
                         .Where(x => x.MaLoaiBds == loai)
                         .Where(x => x.MaXp == xa)
                         .Where(x => x.DienTich <= max && x.DienTich >= min)
-                        .Where(x=>x.HuongNha==huong)
+                        .Where(x => x.HuongNha == huong)
                         .Count();
                     _post = _context.TblBaiDangs
                         .Where(x => x.MaLoaiBds == loai)
@@ -636,7 +640,7 @@ namespace BatdongsanAPI.Controllers
                     return response;
                 }
             }
-            if (hinhthuc != "" && huong =="")
+            if (hinhthuc != "" && huong == "")
             {
                 if (xa != "")
                 {
@@ -739,7 +743,7 @@ namespace BatdongsanAPI.Controllers
                         .Where(x => x.MaHinhThuc == hinhthuc)
                         .Where(x => x.MaXp == xa)
                         .Where(x => x.DienTich <= max && x.DienTich >= min)
-                        .Where(x=>x.HuongNha==huong)
+                        .Where(x => x.HuongNha == huong)
                         .Count();
                     _post = _context.TblBaiDangs
                         .Where(x => x.MaHinhThuc == hinhthuc)
