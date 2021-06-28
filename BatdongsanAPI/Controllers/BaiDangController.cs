@@ -34,7 +34,7 @@ namespace BatdongsanAPI.Controllers
 
         public async Task<ActionResult<IEnumerable<TblBaiDang>>> getTuongTu()
         {
-            return await _context.TblBaiDangs.OrderByDescending(x => x.MaBaiDang).Take().ToListAsync();
+            return await _context.TblBaiDangs.OrderByDescending(x => x.MaBaiDang).Take(8).ToListAsync();
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<TblBaiDang>> getDetail(string id)
